@@ -1,0 +1,26 @@
+name: Verify Secrets
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify-secrets:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Echo Secrets
+      env:
+        PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+        HOST_NAME: ${{ secrets.EC2_HOST }}
+        USER_NAME: ${{ secrets.EC2_USER_NAME }}
+      run: |
+        echo "Private Key (first 10 characters): ${PRIVATE_KEY:0:10}"
+        echo "Host Name: $HOST_NAME"
+        echo "Host Name (first letter): ${HOST_NAME:0:1}"
+        echo "User Name: $USER_NAME"
+        echo "User Name (first letter): ${USER_NAME:0:1}"
